@@ -12,6 +12,7 @@
 3. 画像上でマウスホイールすると拡大・縮小することができます。
 
 ※ " Dispay Viewport" チェックボックスでViewport表示有無を切り替えることができます。
+
 ※ "Viewport Color" でViewportの色を変えることができます。
 
 # Features
