@@ -1,0 +1,88 @@
+﻿<Window x:Class="ImageViewer.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:ImageViewer.View"
+        xmlns:common="clr-namespace:ImageViewer.Common"
+        xmlns:control="clr-namespace:ImageViewer.Control"
+        xmlns:vm="clr-namespace:ImageViewer.ViewModel"
+        mc:Ignorable="d"
+        Title="ImageViewer" Width="600" Height="300" Background="LightGray">
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid x:Name="topGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Header="Setting" Margin="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource normalButtonStyle}" Content="Open Image" Command="{Binding ImageOpenCommand}" />
+                <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource normalLabelStyle}" Content="Display Viewport" />
+                <CheckBox Grid.Row="1" Grid.Column="1" Style="{StaticResource normalCheckBoxStyle}" IsChecked="{Binding IsDisplayedViewport}" />
+                <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource normalLabelStyle}" Content="Viewport Color" />
+                <ComboBox Grid.Row="2" Grid.Column="1" Style="{StaticResource normalComboBoxStyle}"
+                          ItemsSource="{Binding Source={StaticResource viewportColorSource}}" SelectedItem="{Binding CurrentViewportColor}" />
+            </Grid>
+        </GroupBox>
+        <Canvas Grid.Column="1" Width="{Binding ElementName=thumbnail, Path=ActualWidth}" Height="{Binding ElementName=thumbnail, Path=ActualHeight}"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" UseLayoutRounding="True" ClipToBounds="True">
+            <Image x:Name="thumbnail" Source="{Binding Thumbnail, Mode=OneWay}" Stretch="Uniform" Width="140" />
+            <Thumb x:Name="viewport" Visibility="{Binding IsDisplayedViewport, Converter={StaticResource boolToVis}}">
+                <Thumb.Template>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Rectangle Stroke="Black" StrokeThickness="1" Opacity="0.5">
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Red">
+                                            <Setter Property="Fill" Value="Red" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Blue">
+                                            <Setter Property="Fill" Value="Blue" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Green">
+                                            <Setter Property="Fill" Value="Green" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Yellow">
+                                            <Setter Property="Fill" Value="Yellow" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Pink">
+                                            <Setter Property="Fill" Value="Pink" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+                        </Rectangle>
+                    </ControlTemplate>
+                </Thumb.Template>
+                <i:Interaction.Behaviors>
+                    <common:ViewportDragBehavior CanDragViewport="True" />
+                </i:Interaction.Behaviors>
+            </Thumb>
+        </Canvas>
+        <ScrollViewer Grid.Column="2" x:Name="mainImageScrollViewer" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+            <i:Interaction.Behaviors>
+                <common:MainImageScrollBehavior CanResizeViewport="True" />
+            </i:Interaction.Behaviors>
+            <Image x:Name="mainImage" Source="{Binding MainImage, Mode=OneWay}">
+                <i:Interaction.Behaviors>
+                    <common:MainImageMouseWheelBehavior CanScaleImage="True" />
+                </i:Interaction.Behaviors>
+            </Image>
+        </ScrollViewer>
+    </Grid>
+</Window>

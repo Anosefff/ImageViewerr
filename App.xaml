@@ -1,0 +1,60 @@
+﻿<Application x:Class="ImageViewer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:ImageViewer"
+             xmlns:common="clr-namespace:ImageViewer.Common"
+             xmlns:control="clr-namespace:ImageViewer.Control"
+             StartupUri="View\MainWindow.xaml">
+    <Application.Resources>
+        <!--Control Style-->
+        <Style x:Key="normalLabelStyle" TargetType="Label">
+            <Setter Property="Width" Value="Auto" />
+            <Setter Property="MinWidth" Value="80" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style x:Key="normalTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Width" Value="Auto" />
+            <Setter Property="MinWidth" Value="80" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style x:Key="normalCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="normalComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Width" Value="Auto" />
+            <Setter Property="MinWidth" Value="80" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="normalButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="Auto" />
+            <Setter Property="MinWidth" Value="80" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style x:Key="normalRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style x:Key="normalSliderStyle" TargetType="Slider">
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Minimum" Value="0" />
+            <Setter Property="Maximum" Value="100" />
+            <Setter Property="SmallChange" Value="1" />
+            <Setter Property="LargeChange" Value="10" />
+            <Setter Property="TickPlacement" Value="BottomRight" />
+        </Style>
+        <!--ComBoBox Item-->
+        <ObjectDataProvider x:Key="viewportColorSource" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="common:ViewportColor"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <!--Conveter-->
+        <BooleanToVisibilityConverter x:Key="boolToVis" />
+    </Application.Resources>
+</Application>
