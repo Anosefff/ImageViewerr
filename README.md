@@ -2,6 +2,8 @@
 
 こちらは私がポートフォリオの1つとして作成した画像ビューアです。
  
+ <img width="545" alt="ImageViewer" src="https://user-images.githubusercontent.com/68487631/91004278-b3e0b480-e60e-11ea-9386-5d0b6bf78d32.png">
+ 
 # How to Use
 
 1. "Open Image" をクリックすると画像ファイル選択ダイアログが開きます。
