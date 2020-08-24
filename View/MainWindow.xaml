@@ -6,10 +6,9 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:ImageViewer.View"
         xmlns:common="clr-namespace:ImageViewer.Common"
-        xmlns:control="clr-namespace:ImageViewer.Control"
         xmlns:vm="clr-namespace:ImageViewer.ViewModel"
         mc:Ignorable="d"
-        Title="ImageViewer" Width="620" Height="320" Background="LightGray">
+        Title="ImageViewer" Width="600" Height="300" Background="LightGray">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
