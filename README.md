@@ -22,7 +22,11 @@ MVVM(Model-View-ViewModel)パターンを採用しています。
 再利用性の高いコードを実現しています。
 
 画像ビューアとしての機能はシンプルになるように心がけました。
- 
+
+# Note
+
+開発環境 : Visual Studio 2017 Community
+
 # Author
 
 Sparks20
