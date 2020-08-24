@@ -15,7 +15,6 @@ MVVM(Model-View-ViewModel)パターンを採用しています。
 Sparks20
  
 # License
-ライセンスを明示する
  
 "ImageViewer" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
 
