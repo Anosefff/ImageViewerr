@@ -40,6 +40,9 @@ namespace ImageViewer.Model
         {
             var openFileDialog = new OpenFileDialog();
 
+            openFileDialog.Filter =
+                "Image File(*.bmp,*.jpg,*.png,*.tif)|*.bmp;*.jpg;*.png;*.tif|bitmap(*.bmp)|*.bmp|JPEG(*.jpg)|*.jpg|PNG(*.png)|*.png|TIFF(*.tif)|*.tif";
+
             if (openFileDialog.ShowDialog() == true)
             {
                 this.MainImage = new BitmapImage(new Uri(openFileDialog.FileName));
