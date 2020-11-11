@@ -15,6 +15,7 @@ namespace ImageViewer.ViewModel
 {
     class MainWindowViewModel : WeakEventViewModelBase
     {
+        // 依存性を低くするためViewModel上でnewしない、Modelはシングルトンで実装
         private readonly ImageEditor editor = ImageEditor.GetInstance();
         private readonly PropertyChangedWeakEventListener listener = new PropertyChangedWeakEventListener();
 
