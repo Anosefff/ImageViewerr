@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Commom\Behavior\MainImageScrollBehavior.cs" />
     <Compile Include="Commom\Behavior\MainImageMouseWheelBehavior.cs" />
+    <Compile Include="Commom\Dialog\Confirmation.cs" />
     <Compile Include="Commom\Dialog\Notification.cs" />
     <Compile Include="Commom\ImageAttribute.cs" />
     <Compile Include="Commom\NotificationObject.cs" />
