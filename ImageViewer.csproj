@@ -109,5 +109,8 @@
   <ItemGroup>
     <Resource Include="Resource\Sample.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commom\Dialog\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
