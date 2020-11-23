@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Commom\Behavior\MainImageScrollBehavior.cs" />
     <Compile Include="Commom\Behavior\MainImageMouseWheelBehavior.cs" />
+    <Compile Include="Commom\Dialog\Notification.cs" />
     <Compile Include="Commom\ImageAttribute.cs" />
     <Compile Include="Commom\NotificationObject.cs" />
     <Compile Include="Commom\PropertyChangedWeakEventListener.cs" />
@@ -109,8 +110,6 @@
   <ItemGroup>
     <Resource Include="Resource\Sample.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commom\Dialog\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
