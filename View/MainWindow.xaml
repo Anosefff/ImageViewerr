@@ -39,13 +39,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TreeView x:Name="imageTreeView" ItemsSource="{Binding ImageTreeViewItems, Mode=OneWay}">
-                <TreeViewItem>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Selected">
-                            <i:InvokeCommandAction Command="{Binding Command}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TreeViewItem>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="common:MouseDoubleClickBehavior.Command" Value="{Binding Command}" />
+                        <Setter Property="common:MouseDoubleClickBehavior.CommandParameter" Value="{Binding}" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
             </TreeView>
             <Canvas Grid.Column="1" Width="{Binding ElementName=thumbnail, Path=ActualWidth}" Height="{Binding ElementName=thumbnail, Path=ActualHeight}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" UseLayoutRounding="True" ClipToBounds="True">
                 <Image x:Name="thumbnail" Source="{Binding Thumbnail, Mode=OneWay}" Stretch="Uniform" Width="140" />

@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="Commom\Behavior\MainImageScrollBehavior.cs" />
     <Compile Include="Commom\Behavior\MainImageMouseWheelBehavior.cs" />
+    <Compile Include="Commom\Behavior\MouseDoubleClickBehavior.cs" />
     <Compile Include="Commom\Dialog\Confirmation.cs" />
     <Compile Include="Commom\Dialog\DispatcherTriggerAction.cs" />
     <Compile Include="Commom\Dialog\FolderBrowser\FolderBrowserDialogAction.cs" />
