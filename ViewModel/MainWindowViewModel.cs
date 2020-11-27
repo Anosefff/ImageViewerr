@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -16,7 +18,7 @@ namespace ImageViewer.ViewModel
     class MainWindowViewModel : WeakEventViewModelBase
     {
         // 依存性を低くするためViewModel上でnewしない、Modelはシングルトンで実装
-        private readonly ImageEditor editor = ImageEditor.GetInstance();
+        private readonly ImageHandler imageHandler = ImageHandler.GetInstance();
         private readonly PropertyChangedWeakEventListener listener = new PropertyChangedWeakEventListener();
 
         public MainWindowViewModel()
@@ -27,7 +29,7 @@ namespace ImageViewer.ViewModel
             // Model => ViewModel への弱いイベントハンドラ・リスナを登録
             this.listener.WeakPropertyChanged += this.OnWeakListenerPropertyChanged;
 
-            base.AddListener(this.editor, this.listener);
+            base.AddListener(this.imageHandler, this.listener);
         }
 
         #region Event
@@ -37,6 +39,9 @@ namespace ImageViewer.ViewModel
         {
             switch (e.PropertyName)
             {
+                case nameof(this.ImageDirectoryPath):
+                    this.imageHandler.ImageDirectoryPath = this.ImageDirectoryPath;
+                    break;
                 default:
                     break;
             }
@@ -52,10 +57,13 @@ namespace ImageViewer.ViewModel
         {
             switch (e.PropertyName)
             {
-                case nameof(this.editor.Thumbnail):
+                case nameof(this.imageHandler.ImageTreeViewItems):
+                    base.RaisePropertyChanged(nameof(this.ImageTreeViewItems));
+                    break;
+                case nameof(this.imageHandler.Thumbnail):
                     base.RaisePropertyChanged(nameof(this.Thumbnail));
                     break;
-                case nameof(this.editor.MainImage):
+                case nameof(this.imageHandler.MainImage):
                     base.RaisePropertyChanged(nameof(this.MainImage));
                     break;
                 default:
@@ -71,18 +79,40 @@ namespace ImageViewer.ViewModel
 
         #region Command
 
-        private RelayCommand imageOpenCommand;
-        public RelayCommand ImageOpenCommand
+        private RelayCommand imageTreeViewDisplayCommand;
+        public RelayCommand ImageTreeViewDisplayCommand
         {
             get
             {
-                return this.imageOpenCommand = this.imageOpenCommand ?? new RelayCommand(this.editor.OpenImage);
+                return this.imageTreeViewDisplayCommand = this.imageTreeViewDisplayCommand ?? new RelayCommand(this.imageHandler.DisplayImageTreeView);
+            }
+        }
+
+        private RelayCommand command;
+        public RelayCommand Command
+        {
+            get
+            {
+                return this.command = this.command ?? new RelayCommand(this.imageHandler.Command);
             }
         }
 
         #endregion
 
         #region Property
+
+        private String imageDirectoryPath = "";
+        public String ImageDirectoryPath
+        {
+            get { return this.imageDirectoryPath; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.imageDirectoryPath, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
 
         private Boolean isDisplayedViewport = true;
         public Boolean IsDisplayedViewport
@@ -110,14 +140,19 @@ namespace ImageViewer.ViewModel
             }
         }
 
+        public ObservableCollection<TreeViewItem> ImageTreeViewItems
+        {
+            get { return this.imageHandler.ImageTreeViewItems; }
+        }
+
         public BitmapImage Thumbnail
         {
-            get { return this.editor.Thumbnail; }
+            get { return this.imageHandler.Thumbnail; }
         }
 
         public BitmapImage MainImage
         {
-            get { return this.editor.MainImage; }
+            get { return this.imageHandler.MainImage; }
         }
 
         #endregion
