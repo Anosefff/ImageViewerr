@@ -45,12 +45,15 @@
                         <Setter Property="common:MouseDoubleClickBehavior.CommandParameter" Value="{Binding}" />
                     </Style>
                 </TreeView.ItemContainerStyle>
+                <i:Interaction.Behaviors>
+                    <common:TreeViewSelectedItemBehavior SelectedItem="{Binding CurrentImageTreeViewItem, Mode=OneWayToSource}" />
+                </i:Interaction.Behaviors>
             </TreeView>
             <Canvas Grid.Column="1" Width="{Binding ElementName=thumbnail, Path=ActualWidth}" Height="{Binding ElementName=thumbnail, Path=ActualHeight}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" UseLayoutRounding="True" ClipToBounds="True">
                 <Image x:Name="thumbnail" Source="{Binding Thumbnail, Mode=OneWay}" Stretch="Uniform" Width="140" />
                 <Thumb x:Name="viewport" Visibility="{Binding IsDisplayedViewport, Converter={StaticResource boolToVis}}">
                     <Thumb.Template>
-                        <ControlTemplate TargetType="{x:Type Thumb}">
+                        <ControlTemplate TargetType="Thumb">
                             <Rectangle Stroke="Black" StrokeThickness="1" Opacity="0.5">
                                 <Rectangle.Style>
                                     <Style TargetType="Rectangle">

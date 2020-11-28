@@ -42,6 +42,9 @@ namespace ImageViewer.ViewModel
                 case nameof(this.ImageDirectoryPath):
                     this.imageHandler.ImageDirectoryPath = this.ImageDirectoryPath;
                     break;
+                case nameof(this.CurrentImageTreeViewItem):
+                    this.imageHandler.CurrentImageTreeViewItem = this.CurrentImageTreeViewItem;
+                    break;
                 default:
                     break;
             }
@@ -108,6 +111,19 @@ namespace ImageViewer.ViewModel
             set
             {
                 if (base.RaisePropertyChangedIfSet(ref this.imageDirectoryPath, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private TreeViewItem currentImageTreeViewItem;
+        public TreeViewItem CurrentImageTreeViewItem
+        {
+            get { return this.currentImageTreeViewItem; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.currentImageTreeViewItem, value))
                 {
                     base.RaisePropertyChanged();
                 }

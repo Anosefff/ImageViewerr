@@ -104,6 +104,7 @@ namespace ImageViewer.Model
 
         public void DisplayImageTreeView()
         {
+            this.CurrentImageTreeViewItem = null;
             this.ImageTreeViewItems.Clear();
 
             var imageDirectoryInfo = new DirectoryInfo(this.ImageDirectoryPath);
@@ -113,8 +114,15 @@ namespace ImageViewer.Model
 
         public void Command()
         {
+            if (this.CurrentImageTreeViewItem == null)
+            {
+                return;
+            }
 
-            Console.WriteLine("Command");
+            var header = (StackPanel)this.CurrentImageTreeViewItem.Header;
+            var name = header.Children();
+
+            Console.WriteLine("aaa");
         }
 
         #endregion
@@ -141,6 +149,19 @@ namespace ImageViewer.Model
             set
             {
                 if (base.RaisePropertyChangedIfSet(ref this.imageTreeViewItems, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private TreeViewItem currentImageTreeViewItem;
+        public TreeViewItem CurrentImageTreeViewItem
+        {
+            get { return this.currentImageTreeViewItem; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.currentImageTreeViewItem, value))
                 {
                     base.RaisePropertyChanged();
                 }

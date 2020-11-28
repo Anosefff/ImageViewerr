@@ -65,23 +65,25 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commom\Behavior\MainImageScrollBehavior.cs" />
-    <Compile Include="Commom\Behavior\MainImageMouseWheelBehavior.cs" />
-    <Compile Include="Commom\Behavior\MouseDoubleClickBehavior.cs" />
-    <Compile Include="Commom\Dialog\Confirmation.cs" />
-    <Compile Include="Commom\Dialog\DispatcherTriggerAction.cs" />
-    <Compile Include="Commom\Dialog\FolderBrowser\FolderBrowserDialogAction.cs" />
-    <Compile Include="Commom\Dialog\FolderBrowser\FolderBrowserDialogConfirmation.cs" />
-    <Compile Include="Commom\Dialog\InteractionRequestedEventArgs.cs" />
-    <Compile Include="Commom\Dialog\InteractionRequestEventArgsNullObject.cs" />
-    <Compile Include="Commom\Dialog\Notification.cs" />
-    <Compile Include="Commom\ImageAttribute.cs" />
-    <Compile Include="Commom\NotificationObject.cs" />
-    <Compile Include="Commom\PropertyChangedWeakEventListener.cs" />
-    <Compile Include="Commom\Behavior\ViewportDragBehavior.cs" />
-    <Compile Include="Commom\RelayCommand.cs" />
-    <Compile Include="Commom\VisualTree.cs" />
-    <Compile Include="Commom\WeakEventViewModelBase.cs" />
+    <Compile Include="Common\Behavior\MainImageScrollBehavior.cs" />
+    <Compile Include="Common\Behavior\MainImageMouseWheelBehavior.cs" />
+    <Compile Include="Common\Behavior\MouseDoubleClickBehavior.cs" />
+    <Compile Include="Common\Behavior\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Common\Dialog\Confirmation.cs" />
+    <Compile Include="Common\Dialog\DispatcherTriggerAction.cs" />
+    <Compile Include="Common\Dialog\FolderBrowser\FolderBrowserDialogAction.cs" />
+    <Compile Include="Common\Dialog\FolderBrowser\FolderBrowserDialogConfirmation.cs" />
+    <Compile Include="Common\Dialog\InteractionRequestedEventArgs.cs" />
+    <Compile Include="Common\Dialog\InteractionRequestEventArgsNullObject.cs" />
+    <Compile Include="Common\Dialog\Notification.cs" />
+    <Compile Include="Common\ImageAttribute.cs" />
+    <Compile Include="Common\NotificationObject.cs" />
+    <Compile Include="Common\PropertyChangedWeakEventListener.cs" />
+    <Compile Include="Common\Behavior\ViewportDragBehavior.cs" />
+    <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Common\TreeView\PathInfo.cs" />
+    <Compile Include="Common\VisualTree.cs" />
+    <Compile Include="Common\WeakEventViewModelBase.cs" />
     <Compile Include="Model\ImageHandler.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
@@ -124,5 +126,6 @@
   <ItemGroup>
     <Resource Include="Resource\ImageIcon.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
