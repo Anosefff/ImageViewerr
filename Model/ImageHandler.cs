@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,8 +57,36 @@ namespace ImageViewer.Model
             this.Thumbnail = this.MainImage;
         }
 
+        public void DisplayImage()
+        {
+            if (this.CurrentImageFilePath == null)
+            {
+                return;
+            }
+
+            if (String.IsNullOrEmpty(this.CurrentImageFilePath.FullPath))
+            {
+                return;
+            }
+
+            if (this.CurrentImageFilePath.FullPath.EndsWith("png", StringComparison.OrdinalIgnoreCase) ||
+                this.CurrentImageFilePath.FullPath.EndsWith("gif", StringComparison.OrdinalIgnoreCase) ||
+                this.CurrentImageFilePath.FullPath.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase) ||
+                this.CurrentImageFilePath.FullPath.EndsWith("tiff", StringComparison.OrdinalIgnoreCase) ||
+                this.CurrentImageFilePath.FullPath.EndsWith("bmp", StringComparison.OrdinalIgnoreCase))
+            {
+                this.DisplayImage(this.CurrentImageFilePath.FullPath);
+            }
+            else
+            {
+                MessageBox.Show("画像ファイルを選択してください。");
+            }
+        }
+
         public void AddImageFilePath()
         {
+            this.IsDisplayedImageTreeView = true;
+            this.CurrentImageFilePath = null;
             this.ImageFilePaths.Clear();
 
             // 権限がなくパスが参照できない可能性があるので例外処理
@@ -68,16 +97,6 @@ namespace ImageViewer.Model
             catch
             {
             }
-        }
-
-        public void Test()
-        {
-            if (this.CurrentImageFilePath == null)
-            {
-                return;
-            }
-
-            this.DisplayImage(this.CurrentImageFilePath.FullPath);
         }
 
         #endregion
@@ -91,6 +110,19 @@ namespace ImageViewer.Model
             set
             {
                 if (base.RaisePropertyChangedIfSet(ref this.imageDirectoryPath, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private Boolean isDisplayedImageTreeView;
+        public Boolean IsDisplayedImageTreeView
+        {
+            get { return this.isDisplayedImageTreeView; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.isDisplayedImageTreeView, value))
                 {
                     base.RaisePropertyChanged();
                 }

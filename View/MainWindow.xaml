@@ -39,14 +39,14 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <common:CustomTreeView Grid.Column="0" x:Name="imageTreeView" ItemsSource="{Binding ImageFilePaths, Mode=OneWay}" CustomSelectedItem="{Binding CurrentImageFilePath, Mode=OneWayToSource}">
+            <common:CustomTreeView Grid.Column="0" x:Name="imageTreeView" ItemsSource="{Binding ImageFilePaths, Mode=OneWay}" CustomSelectedItem="{Binding CurrentImageFilePath, Mode=OneWayToSource}" Margin="4" Visibility="{Binding IsDisplayedImageTreeView, Converter={StaticResource boolToVis}}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="model:PathInfo" ItemsSource="{Binding Children, Mode=OneWay}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding Icon, Mode=OneWay}" Width="16" Height="16" />
                             <TextBlock Text="{Binding Name, Mode=OneWay}" Margin="4">
                                 <TextBlock.InputBindings>
-                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.TestCommand, RelativeSource={RelativeSource AncestorType={x:Type common:CustomTreeView}}}" />
+                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.ImageDisplayCommand, RelativeSource={RelativeSource AncestorType={x:Type common:CustomTreeView}}}" />
                                 </TextBlock.InputBindings>
                             </TextBlock>
                         </StackPanel>

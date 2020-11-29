@@ -60,6 +60,9 @@ namespace ImageViewer.ViewModel
         {
             switch (e.PropertyName)
             {
+                case nameof(this.imageHandler.IsDisplayedImageTreeView):
+                    base.RaisePropertyChanged(nameof(this.IsDisplayedImageTreeView));
+                    break;
                 case nameof(this.imageHandler.ImageFilePaths):
                     base.RaisePropertyChanged(nameof(this.ImageFilePaths));
                     break;
@@ -91,12 +94,12 @@ namespace ImageViewer.ViewModel
             }
         }
 
-        private RelayCommand testCommand;
-        public RelayCommand TestCommand
+        private RelayCommand imageDisplayCommand;
+        public RelayCommand ImageDisplayCommand
         {
             get
             {
-                return this.testCommand = this.testCommand ?? new RelayCommand(this.imageHandler.Test);
+                return this.imageDisplayCommand = this.imageDisplayCommand ?? new RelayCommand(this.imageHandler.DisplayImage);
             }
         }
 
@@ -154,6 +157,11 @@ namespace ImageViewer.ViewModel
                     base.RaisePropertyChanged();
                 }
             }
+        }
+
+        public Boolean IsDisplayedImageTreeView
+        {
+            get { return this.imageHandler.IsDisplayedImageTreeView; }
         }
 
         public ObservableCollection<ImageFilePathInfo> ImageFilePaths

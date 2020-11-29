@@ -57,7 +57,11 @@ namespace ImageViewer.Model
                     // *.tiff
                     // *.bmp
                     var imageFiles = Directory.EnumerateFiles(this.FullPath)
-                        .Where(file => file.ToLower().EndsWith("png") || file.ToLower().EndsWith("gif") || file.ToLower().EndsWith("jpeg") || file.ToLower().EndsWith("tiff") || file.ToLower().EndsWith("bmp"))
+                        .Where(file => file.ToLower().EndsWith("png", StringComparison.OrdinalIgnoreCase) ||
+                               file.ToLower().EndsWith("gif", StringComparison.OrdinalIgnoreCase) ||
+                               file.ToLower().EndsWith("jpeg", StringComparison.OrdinalIgnoreCase) ||
+                               file.ToLower().EndsWith("tiff", StringComparison.OrdinalIgnoreCase) ||
+                               file.ToLower().EndsWith("bmp", StringComparison.OrdinalIgnoreCase))
                         .ToList();
 
                     // 下位ファイル一覧を取得
