@@ -42,8 +42,8 @@ namespace ImageViewer.ViewModel
                 case nameof(this.ImageDirectoryPath):
                     this.imageHandler.ImageDirectoryPath = this.ImageDirectoryPath;
                     break;
-                case nameof(this.CurrentImageTreeViewItem):
-                    this.imageHandler.CurrentImageTreeViewItem = this.CurrentImageTreeViewItem;
+                case nameof(this.CurrentImageFilePath):
+                    this.imageHandler.CurrentImageFilePath = this.CurrentImageFilePath;
                     break;
                 default:
                     break;
@@ -60,8 +60,8 @@ namespace ImageViewer.ViewModel
         {
             switch (e.PropertyName)
             {
-                case nameof(this.imageHandler.ImageTreeViewItems):
-                    base.RaisePropertyChanged(nameof(this.ImageTreeViewItems));
+                case nameof(this.imageHandler.ImageFilePaths):
+                    base.RaisePropertyChanged(nameof(this.ImageFilePaths));
                     break;
                 case nameof(this.imageHandler.Thumbnail):
                     base.RaisePropertyChanged(nameof(this.Thumbnail));
@@ -87,16 +87,16 @@ namespace ImageViewer.ViewModel
         {
             get
             {
-                return this.imageTreeViewDisplayCommand = this.imageTreeViewDisplayCommand ?? new RelayCommand(this.imageHandler.DisplayImageTreeView);
+                return this.imageTreeViewDisplayCommand = this.imageTreeViewDisplayCommand ?? new RelayCommand(this.imageHandler.AddImageFilePath);
             }
         }
 
-        private RelayCommand command;
-        public RelayCommand Command
+        private RelayCommand testCommand;
+        public RelayCommand TestCommand
         {
             get
             {
-                return this.command = this.command ?? new RelayCommand(this.imageHandler.Command);
+                return this.testCommand = this.testCommand ?? new RelayCommand(this.imageHandler.Test);
             }
         }
 
@@ -117,13 +117,13 @@ namespace ImageViewer.ViewModel
             }
         }
 
-        private TreeViewItem currentImageTreeViewItem;
-        public TreeViewItem CurrentImageTreeViewItem
+        private ImageFilePathInfo currentImageFilePath;
+        public ImageFilePathInfo CurrentImageFilePath
         {
-            get { return this.currentImageTreeViewItem; }
+            get { return this.currentImageFilePath; }
             set
             {
-                if (base.RaisePropertyChangedIfSet(ref this.currentImageTreeViewItem, value))
+                if (base.RaisePropertyChangedIfSet(ref this.currentImageFilePath, value))
                 {
                     base.RaisePropertyChanged();
                 }
@@ -156,9 +156,9 @@ namespace ImageViewer.ViewModel
             }
         }
 
-        public ObservableCollection<TreeViewItem> ImageTreeViewItems
+        public ObservableCollection<ImageFilePathInfo> ImageFilePaths
         {
-            get { return this.imageHandler.ImageTreeViewItems; }
+            get { return this.imageHandler.ImageFilePaths; }
         }
 
         public BitmapImage Thumbnail

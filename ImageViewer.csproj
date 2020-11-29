@@ -67,8 +67,7 @@
     </Compile>
     <Compile Include="Common\Behavior\MainImageScrollBehavior.cs" />
     <Compile Include="Common\Behavior\MainImageMouseWheelBehavior.cs" />
-    <Compile Include="Common\Behavior\MouseDoubleClickBehavior.cs" />
-    <Compile Include="Common\Behavior\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Common\CustomTreeView.cs" />
     <Compile Include="Common\Dialog\Confirmation.cs" />
     <Compile Include="Common\Dialog\DispatcherTriggerAction.cs" />
     <Compile Include="Common\Dialog\FolderBrowser\FolderBrowserDialogAction.cs" />
@@ -81,7 +80,7 @@
     <Compile Include="Common\PropertyChangedWeakEventListener.cs" />
     <Compile Include="Common\Behavior\ViewportDragBehavior.cs" />
     <Compile Include="Common\RelayCommand.cs" />
-    <Compile Include="Common\TreeView\PathInfo.cs" />
+    <Compile Include="Model\ImageFilePathInfo.cs" />
     <Compile Include="Common\VisualTree.cs" />
     <Compile Include="Common\WeakEventViewModelBase.cs" />
     <Compile Include="Model\ImageHandler.cs" />

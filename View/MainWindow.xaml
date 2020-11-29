@@ -6,6 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:ImageViewer.View"
         xmlns:common="clr-namespace:ImageViewer.Common"
+        xmlns:model="clr-namespace:ImageViewer.Model"
         xmlns:vm="clr-namespace:ImageViewer.ViewModel"
         mc:Ignorable="d"
         Title="ImageViewer" Width="840" Height="600" Background="LightGray">
@@ -38,17 +39,20 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TreeView x:Name="imageTreeView" ItemsSource="{Binding ImageTreeViewItems, Mode=OneWay}">
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="TreeViewItem">
-                        <Setter Property="common:MouseDoubleClickBehavior.Command" Value="{Binding Command}" />
-                        <Setter Property="common:MouseDoubleClickBehavior.CommandParameter" Value="{Binding}" />
-                    </Style>
-                </TreeView.ItemContainerStyle>
-                <i:Interaction.Behaviors>
-                    <common:TreeViewSelectedItemBehavior SelectedItem="{Binding CurrentImageTreeViewItem, Mode=OneWayToSource}" />
-                </i:Interaction.Behaviors>
-            </TreeView>
+            <common:CustomTreeView Grid.Column="0" x:Name="imageTreeView" ItemsSource="{Binding ImageFilePaths, Mode=OneWay}" CustomSelectedItem="{Binding CurrentImageFilePath, Mode=OneWayToSource}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="model:PathInfo" ItemsSource="{Binding Children, Mode=OneWay}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Icon, Mode=OneWay}" Width="16" Height="16" />
+                            <TextBlock Text="{Binding Name, Mode=OneWay}" Margin="4">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.TestCommand, RelativeSource={RelativeSource AncestorType={x:Type common:CustomTreeView}}}" />
+                                </TextBlock.InputBindings>
+                            </TextBlock>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </common:CustomTreeView>
             <Canvas Grid.Column="1" Width="{Binding ElementName=thumbnail, Path=ActualWidth}" Height="{Binding ElementName=thumbnail, Path=ActualHeight}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" UseLayoutRounding="True" ClipToBounds="True">
                 <Image x:Name="thumbnail" Source="{Binding Thumbnail, Mode=OneWay}" Stretch="Uniform" Width="140" />
                 <Thumb x:Name="viewport" Visibility="{Binding IsDisplayedViewport, Converter={StaticResource boolToVis}}">

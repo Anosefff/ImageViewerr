@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
-
-using Microsoft.Win32;
 
 using ImageViewer.Common;
 
@@ -31,9 +31,7 @@ namespace ImageViewer.Model
 
         public ImageHandler()
         {
-            var imageFilePath = @"..\Resource\Sample.jpg";
-
-            this.DisplayImage(imageFilePath);
+            this.DisplayImage(ImageAttribute.sampleImageFilePath, true);
         }
 
         #endregion
@@ -44,85 +42,42 @@ namespace ImageViewer.Model
 
         #region Method
 
-        private void DisplayImage(String imageFilePath)
+        private void DisplayImage(String imageFilePath, Boolean isSample = false)
         {
-            this.MainImage = new BitmapImage(new Uri(imageFilePath, UriKind.Relative));
+            if (isSample)
+            {
+                this.MainImage = new BitmapImage(new Uri(imageFilePath, UriKind.Relative));
+            }
+            else
+            {
+                this.MainImage = new BitmapImage(new Uri(imageFilePath, UriKind.Absolute));
+            }
+
             this.Thumbnail = this.MainImage;
         }
 
-        private TreeViewItem CreateDirectoryNode(DirectoryInfo directoryInfo)
+        public void AddImageFilePath()
         {
-            var directoryHeader = this.CreateDirectoryHeader(directoryInfo);
-            var directoryNode = new TreeViewItem { Header = directoryHeader };
+            this.ImageFilePaths.Clear();
 
-            foreach (var directory in directoryInfo.GetDirectories())
+            // 権限がなくパスが参照できない可能性があるので例外処理
+            try
             {
-                directoryNode.Items.Add(this.CreateDirectoryNode(directory));
+                this.ImageFilePaths.Add(new ImageFilePathInfo(this.ImageDirectoryPath, ImageAttribute.directoryIconPath));
             }
-
-            foreach (var fileInfo in directoryInfo.GetFiles())
+            catch
             {
-                var imageHeader = this.CreateImageHeader(fileInfo);
-
-                directoryNode.Items.Add(new TreeViewItem { Header = imageHeader });
             }
-
-            return directoryNode;
         }
 
-        private StackPanel CreateDirectoryHeader(DirectoryInfo directoryInfo)
+        public void Test()
         {
-            var sp = new StackPanel() { Orientation = Orientation.Horizontal };
-
-            sp.Children.Add(new Image()
-            {
-                Source = new BitmapImage(new Uri(@"..\Resource\DirectoryIcon.jpg", UriKind.Relative)),
-                Width = 16,
-                Height = 16,
-            });
-
-            sp.Children.Add(new TextBlock() { Text = directoryInfo.Name });
-
-            return sp;
-        }
-
-        private StackPanel CreateImageHeader(FileInfo fileInfo)
-        {
-            var sp = new StackPanel() { Orientation = Orientation.Horizontal };
-
-            sp.Children.Add(new Image()
-            {
-                Source = new BitmapImage(new Uri(@"..\Resource\ImageIcon.jpg", UriKind.Relative)),
-                Width = 16,
-                Height = 16,
-            });
-
-            sp.Children.Add(new TextBlock() { Text = fileInfo.Name });
-
-            return sp;
-        }
-
-        public void DisplayImageTreeView()
-        {
-            this.CurrentImageTreeViewItem = null;
-            this.ImageTreeViewItems.Clear();
-
-            var imageDirectoryInfo = new DirectoryInfo(this.ImageDirectoryPath);
-
-            this.ImageTreeViewItems.Add(this.CreateDirectoryNode(imageDirectoryInfo));
-        }
-
-        public void Command()
-        {
-            if (this.CurrentImageTreeViewItem == null)
+            if (this.CurrentImageFilePath == null)
             {
                 return;
             }
 
-            var header = (StackPanel)this.CurrentImageTreeViewItem.Header;
-            var name = header.Children();
-
-            Console.WriteLine("aaa");
+            this.DisplayImage(this.CurrentImageFilePath.FullPath);
         }
 
         #endregion
@@ -142,26 +97,26 @@ namespace ImageViewer.Model
             }
         }
 
-        private ObservableCollection<TreeViewItem> imageTreeViewItems = new ObservableCollection<TreeViewItem>();
-        public ObservableCollection<TreeViewItem> ImageTreeViewItems
+        private ObservableCollection<ImageFilePathInfo> imageFilePaths = new ObservableCollection<ImageFilePathInfo>();
+        public ObservableCollection<ImageFilePathInfo> ImageFilePaths
         {
-            get { return this.imageTreeViewItems; }
+            get { return this.imageFilePaths; }
             set
             {
-                if (base.RaisePropertyChangedIfSet(ref this.imageTreeViewItems, value))
+                if (base.RaisePropertyChangedIfSet(ref this.imageFilePaths, value))
                 {
                     base.RaisePropertyChanged();
                 }
             }
         }
 
-        private TreeViewItem currentImageTreeViewItem;
-        public TreeViewItem CurrentImageTreeViewItem
+        private ImageFilePathInfo currentImageFilePath;
+        public ImageFilePathInfo CurrentImageFilePath
         {
-            get { return this.currentImageTreeViewItem; }
+            get { return this.currentImageFilePath; }
             set
             {
-                if (base.RaisePropertyChangedIfSet(ref this.currentImageTreeViewItem, value))
+                if (base.RaisePropertyChangedIfSet(ref this.currentImageFilePath, value))
                 {
                     base.RaisePropertyChanged();
                 }
