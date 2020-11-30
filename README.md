@@ -64,9 +64,13 @@ Web上にはフリーの画像ビューアが数多く公開されています�
 
 # Author
 
-Sparks20
+Anosefff
  
 # License
- 
+
 "ImageViewer" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+
+また、ディレクトリ・画像アイコンはフリー画像を使用しており、著作権は下記にあります。
+
+https://sozai.cman.jp/
 
