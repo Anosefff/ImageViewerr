@@ -45,6 +45,12 @@ namespace ImageViewer.ViewModel
                 case nameof(this.CurrentImageFilePath):
                     this.imageHandler.CurrentImageFilePath = this.CurrentImageFilePath;
                     break;
+                case nameof(this.IsThumbnail):
+                    this.imageHandler.IsThumbnail = this.IsThumbnail;
+                    break;
+                case nameof(this.IsSlideshow):
+                    this.imageHandler.IsSlideshow = this.IsSlideshow;
+                    break;
                 default:
                     break;
             }
@@ -69,6 +75,9 @@ namespace ImageViewer.ViewModel
                 case nameof(this.imageHandler.Thumbnail):
                     base.RaisePropertyChanged(nameof(this.Thumbnail));
                     break;
+                case nameof(this.imageHandler.CurrentViewportColor):
+                    base.RaisePropertyChanged(nameof(this.CurrentViewportColor));
+                    break;
                 case nameof(this.imageHandler.MainImage):
                     base.RaisePropertyChanged(nameof(this.MainImage));
                     break;
@@ -81,6 +90,22 @@ namespace ImageViewer.ViewModel
 
         #region Method
 
+        // オブジェクト破棄処理
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                // イベントハンドラ登録解除
+                base.PropertyChanged -= OnThisPropertyChanged;
+                this.listener.WeakPropertyChanged -= OnWeakListenerPropertyChanged;
+
+                // タイマー停止
+                this.imageHandler.StopSlideshow();
+            }
+
+            base.Dispose(disposing);
+        }
+
         #endregion
 
         #region Command
@@ -90,7 +115,7 @@ namespace ImageViewer.ViewModel
         {
             get
             {
-                return this.imageTreeViewDisplayCommand = this.imageTreeViewDisplayCommand ?? new RelayCommand(this.imageHandler.AddImageFilePath);
+                return this.imageTreeViewDisplayCommand = this.imageTreeViewDisplayCommand ?? new RelayCommand(this.imageHandler.DisplayImageTreeView);
             }
         }
 
@@ -100,6 +125,15 @@ namespace ImageViewer.ViewModel
             get
             {
                 return this.imageDisplayCommand = this.imageDisplayCommand ?? new RelayCommand(this.imageHandler.DisplayImage);
+            }
+        }
+
+        private RelayCommand slideshowCommand;
+        public RelayCommand SlideshowCommand
+        {
+            get
+            {
+                return this.slideshowCommand = this.slideshowCommand ?? new RelayCommand(this.imageHandler.Slideshow);
             }
         }
 
@@ -120,6 +154,16 @@ namespace ImageViewer.ViewModel
             }
         }
 
+        public Boolean IsDisplayedImageTreeView
+        {
+            get { return this.imageHandler.IsDisplayedImageTreeView; }
+        }
+
+        public ObservableCollection<ImageFilePathInfo> ImageFilePaths
+        {
+            get { return this.imageHandler.ImageFilePaths; }
+        }
+
         private ImageFilePathInfo currentImageFilePath;
         public ImageFilePathInfo CurrentImageFilePath
         {
@@ -133,40 +177,17 @@ namespace ImageViewer.ViewModel
             }
         }
 
-        private Boolean isDisplayedViewport = true;
-        public Boolean IsDisplayedViewport
+        private Boolean isThumbnail;
+        public Boolean IsThumbnail
         {
-            get { return this.isDisplayedViewport; }
+            get { return this.isThumbnail; }
             set
             {
-                if (base.RaisePropertyChangedIfSet(ref this.isDisplayedViewport, value))
+                if (base.RaisePropertyChangedIfSet(ref this.isThumbnail, value))
                 {
                     base.RaisePropertyChanged();
                 }
             }
-        }
-
-        private ViewportColor currentViewportColor = ViewportColor.Red;
-        public ViewportColor CurrentViewportColor
-        {
-            get { return this.currentViewportColor; }
-            set
-            {
-                if (base.RaisePropertyChangedIfSet(ref this.currentViewportColor, value))
-                {
-                    base.RaisePropertyChanged();
-                }
-            }
-        }
-
-        public Boolean IsDisplayedImageTreeView
-        {
-            get { return this.imageHandler.IsDisplayedImageTreeView; }
-        }
-
-        public ObservableCollection<ImageFilePathInfo> ImageFilePaths
-        {
-            get { return this.imageHandler.ImageFilePaths; }
         }
 
         public BitmapImage Thumbnail
@@ -174,9 +195,27 @@ namespace ImageViewer.ViewModel
             get { return this.imageHandler.Thumbnail; }
         }
 
+        public ViewportColor CurrentViewportColor
+        {
+            get { return this.imageHandler.CurrentViewportColor; }
+        }
+
         public BitmapImage MainImage
         {
             get { return this.imageHandler.MainImage; }
+        }
+
+        private Boolean isSlideshow;
+        public Boolean IsSlideshow
+        {
+            get { return this.isSlideshow; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.isSlideshow, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
         }
 
         #endregion

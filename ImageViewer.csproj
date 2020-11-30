@@ -67,6 +67,8 @@
     </Compile>
     <Compile Include="Common\Behavior\MainImageScrollBehavior.cs" />
     <Compile Include="Common\Behavior\MainImageMouseWheelBehavior.cs" />
+    <Compile Include="Common\Behavior\ViewModelCleanupBehavior.cs" />
+    <Compile Include="Common\Behavior\WindowCloseBehavior.cs" />
     <Compile Include="Common\CustomTreeView.cs" />
     <Compile Include="Common\Dialog\Confirmation.cs" />
     <Compile Include="Common\Dialog\DispatcherTriggerAction.cs" />

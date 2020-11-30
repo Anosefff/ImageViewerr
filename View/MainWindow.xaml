@@ -9,16 +9,22 @@
         xmlns:model="clr-namespace:ImageViewer.Model"
         xmlns:vm="clr-namespace:ImageViewer.ViewModel"
         mc:Ignorable="d"
-        Title="ImageViewer" Width="840" Height="600" Background="LightGray">
+        Title="ImageViewer" Width="840" Height="600" Background="Gray">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
+    <i:Interaction.Behaviors>
+        <common:WindowCloseBehavior />
+        <common:ViewModelCleanupBehavior />
+    </i:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" VerticalAlignment="Top">
+        <Label Grid.Row="0" Style="{StaticResource normalLabelStyle}" Content="{Binding CurrentImageFilePath.FullPath}" Background="LightGray" Visibility="{Binding IsDisplayedImageTreeView, Converter={StaticResource boolToVis}}" />
+        <Menu Grid.Row="1" VerticalAlignment="Top">
             <MenuItem Header="ファイル">
                 <MenuItem Header="開く">
                     <i:Interaction.Triggers>
@@ -28,18 +34,46 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>
-                <MenuItem Header="終了" />
+                <MenuItem Header="終了">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="Close" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
             </MenuItem>
-            <MenuItem Header="表示" />
-            <MenuItem Header="オプション" />
+            <MenuItem Header="表示">
+                <MenuItem Header="サムネイル" IsCheckable="True" IsChecked="{Binding IsThumbnail}" />
+                <MenuItem Header="スライドショー" IsCheckable="True" IsChecked="{Binding IsSlideshow}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding SlideshowCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="オプション">
+                <MenuItem Header="設定" />
+                <MenuItem Header="設定をインポート" />
+                <MenuItem Header="設定をエクスポート" />
+            </MenuItem>
         </Menu>
-        <Grid Grid.Row="1" x:Name="topGrid">
+        <Grid Grid.Row="2" x:Name="topGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <common:CustomTreeView Grid.Column="0" x:Name="imageTreeView" ItemsSource="{Binding ImageFilePaths, Mode=OneWay}" CustomSelectedItem="{Binding CurrentImageFilePath, Mode=OneWayToSource}" Margin="4" Visibility="{Binding IsDisplayedImageTreeView, Converter={StaticResource boolToVis}}">
+            <common:CustomTreeView Grid.Column="0" x:Name="imageTreeView" ItemsSource="{Binding ImageFilePaths, Mode=OneWay}" CustomSelectedItem="{Binding CurrentImageFilePath, Mode=OneWayToSource}" Margin="4" Background="LightGray" Visibility="{Binding IsDisplayedImageTreeView, Converter={StaticResource boolToVis}}">
+                <common:CustomTreeView.Resources>
+                    <Style TargetType="TreeViewItem">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DataContext.IsSlideshow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="true">
+                                <Setter Property="IsEnabled" Value="false" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </common:CustomTreeView.Resources>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="model:PathInfo" ItemsSource="{Binding Children, Mode=OneWay}">
                         <StackPanel Orientation="Horizontal">
@@ -54,8 +88,8 @@
                 </TreeView.ItemTemplate>
             </common:CustomTreeView>
             <Canvas Grid.Column="1" Width="{Binding ElementName=thumbnail, Path=ActualWidth}" Height="{Binding ElementName=thumbnail, Path=ActualHeight}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" UseLayoutRounding="True" ClipToBounds="True">
-                <Image x:Name="thumbnail" Source="{Binding Thumbnail, Mode=OneWay}" Stretch="Uniform" Width="140" />
-                <Thumb x:Name="viewport" Visibility="{Binding IsDisplayedViewport, Converter={StaticResource boolToVis}}">
+                <Image x:Name="thumbnail" Source="{Binding Thumbnail, Mode=OneWay}" Stretch="Uniform" Width="140" Visibility="{Binding IsThumbnail, Converter={StaticResource boolToVis}}" />
+                <Thumb x:Name="viewport" Visibility="{Binding IsThumbnail, Converter={StaticResource boolToVis}}">
                     <Thumb.Template>
                         <ControlTemplate TargetType="Thumb">
                             <Rectangle Stroke="Black" StrokeThickness="1" Opacity="0.5">

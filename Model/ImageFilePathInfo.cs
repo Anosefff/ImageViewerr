@@ -14,6 +14,8 @@ namespace ImageViewer.Model
     {
         public String FullPath { get; set; }
 
+        public String CurrentDirectory { get; set; }
+
         public String Name { get; set; }
 
         public BitmapImage Icon { get; set; }
@@ -23,6 +25,7 @@ namespace ImageViewer.Model
         public ImageFilePathInfo(String fullPath, String iconPath)
         {
             this.FullPath = fullPath;
+            this.CurrentDirectory = Path.GetDirectoryName(this.FullPath);
             this.Name = Path.GetFileName(fullPath);
             this.Icon = new BitmapImage(new Uri(iconPath, UriKind.Relative));
 
@@ -59,7 +62,7 @@ namespace ImageViewer.Model
                     var imageFiles = Directory.EnumerateFiles(this.FullPath)
                         .Where(file => file.ToLower().EndsWith("png", StringComparison.OrdinalIgnoreCase) ||
                                file.ToLower().EndsWith("gif", StringComparison.OrdinalIgnoreCase) ||
-                               file.ToLower().EndsWith("jpeg", StringComparison.OrdinalIgnoreCase) ||
+                               file.ToLower().EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
                                file.ToLower().EndsWith("tiff", StringComparison.OrdinalIgnoreCase) ||
                                file.ToLower().EndsWith("bmp", StringComparison.OrdinalIgnoreCase))
                         .ToList();

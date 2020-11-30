@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 using ImageViewer.Common;
 
@@ -17,6 +19,11 @@ namespace ImageViewer.Model
 {
     class ImageHandler : NotificationObject
     {
+        private DispatcherTimer slideshowTimer = new DispatcherTimer();
+        private Int32 slideshowCount = 0;
+
+        private List<String> animationImages = new List<String>();
+
         #region Singleton
 
         private static ImageHandler instance = null;
@@ -38,6 +45,23 @@ namespace ImageViewer.Model
         #endregion
 
         #region Event
+
+        private void SlideShowTimer(Object sender, EventArgs e)
+        {
+            if (this.animationImages.Any())
+            {
+                this.DisplayImage(this.animationImages.ElementAtOrDefault(slideshowCount));
+
+                if (this.slideshowCount == this.animationImages.Count - 1)
+                {
+                    this.slideshowCount = 0;
+                }
+                else
+                {
+                    this.slideshowCount++;
+                }
+            }
+        }
 
         #endregion
 
@@ -69,22 +93,20 @@ namespace ImageViewer.Model
                 return;
             }
 
-            if (this.CurrentImageFilePath.FullPath.EndsWith("png", StringComparison.OrdinalIgnoreCase) ||
-                this.CurrentImageFilePath.FullPath.EndsWith("gif", StringComparison.OrdinalIgnoreCase) ||
-                this.CurrentImageFilePath.FullPath.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase) ||
-                this.CurrentImageFilePath.FullPath.EndsWith("tiff", StringComparison.OrdinalIgnoreCase) ||
-                this.CurrentImageFilePath.FullPath.EndsWith("bmp", StringComparison.OrdinalIgnoreCase))
+            if (!File.GetAttributes(this.CurrentImageFilePath.FullPath).HasFlag(FileAttributes.Directory))
             {
+                // ディレクトリではなくファイルが選択されたら該当する画像を表示
                 this.DisplayImage(this.CurrentImageFilePath.FullPath);
-            }
-            else
-            {
-                MessageBox.Show("画像ファイルを選択してください。");
             }
         }
 
-        public void AddImageFilePath()
+        public void DisplayImageTreeView()
         {
+            if (String.IsNullOrEmpty(this.ImageDirectoryPath))
+            {
+                return;
+            }
+
             this.IsDisplayedImageTreeView = true;
             this.CurrentImageFilePath = null;
             this.ImageFilePaths.Clear();
@@ -97,6 +119,75 @@ namespace ImageViewer.Model
             catch
             {
             }
+        }
+
+        public void Slideshow()
+        {
+            if (this.IsSlideshow)
+            {
+                if (this.CurrentImageFilePath == null)
+                {
+                    return;
+                }
+
+                if (String.IsNullOrEmpty(this.CurrentImageFilePath.CurrentDirectory))
+                {
+                    return;
+                }
+
+                var slideshowDirectory = "";
+
+                // 選択項目によって設定するディレクトリを変更
+                if (File.GetAttributes(this.CurrentImageFilePath.FullPath).HasFlag(FileAttributes.Directory))
+                {
+                    slideshowDirectory = this.CurrentImageFilePath.FullPath;
+                }
+                else
+                {
+                    slideshowDirectory = Path.GetDirectoryName(this.CurrentImageFilePath.FullPath);
+                }
+
+                // 画像ファイルのみ抽出
+                // *.png
+                // *.gif
+                // *.jpeg
+                // *.tiff
+                // *.bmp
+                var imageFiles = Directory.EnumerateFiles(slideshowDirectory, "*", SearchOption.AllDirectories)
+                    .Where(file => file.ToLower().EndsWith("png", StringComparison.OrdinalIgnoreCase) ||
+                           file.ToLower().EndsWith("gif", StringComparison.OrdinalIgnoreCase) ||
+                           file.ToLower().EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
+                           file.ToLower().EndsWith("tiff", StringComparison.OrdinalIgnoreCase) ||
+                           file.ToLower().EndsWith("bmp", StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                this.animationImages.Clear();
+
+                foreach (var imageFile in imageFiles)
+                {
+                    this.animationImages.Add(imageFile);
+                }
+
+                this.StartSlideshow();
+            }
+            else
+            {
+                this.StopSlideshow();
+            }
+        }
+
+        private void StartSlideshow()
+        {
+            this.slideshowTimer.Interval = new TimeSpan(0, 0, 1);
+            this.slideshowTimer.Tick -= this.SlideShowTimer;
+            this.slideshowTimer.Tick += this.SlideShowTimer;
+            this.slideshowTimer.Start();
+        }
+
+        public void StopSlideshow()
+        {
+            this.slideshowTimer.Stop();
+            this.slideshowCount = 0;
         }
 
         #endregion
@@ -155,6 +246,19 @@ namespace ImageViewer.Model
             }
         }
 
+        private Boolean isThumbnail;
+        public Boolean IsThumbnail
+        {
+            get { return this.isThumbnail; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.isThumbnail, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
         private BitmapImage thumbnail;
         public BitmapImage Thumbnail
         {
@@ -168,6 +272,19 @@ namespace ImageViewer.Model
             }
         }
 
+        private ViewportColor currentViewportColor = ViewportColor.Red;
+        public ViewportColor CurrentViewportColor
+        {
+            get { return this.currentViewportColor; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.currentViewportColor, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
         private BitmapImage mainImage;
         public BitmapImage MainImage
         {
@@ -175,6 +292,19 @@ namespace ImageViewer.Model
             set
             {
                 if (base.RaisePropertyChangedIfSet(ref this.mainImage, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private Boolean isSlideshow;
+        public Boolean IsSlideshow
+        {
+            get { return this.isSlideshow; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.isSlideshow, value))
                 {
                     base.RaisePropertyChanged();
                 }
