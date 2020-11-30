@@ -1,8 +1,8 @@
 # ImageViewer
 
-こちらは私がポートフォリオの1つとして作成した画像ビューアです。
+こちらは私がポートフォリオの1つとして作成した画像ビューアです。。。
  
- <img width="545" alt="ImageViewer" src="https://user-images.githubusercontent.com/68487631/91004278-b3e0b480-e60e-11ea-9386-5d0b6bf78d32.png">
+ <img width="619" alt="ImageViewer" src="https://user-images.githubusercontent.com/68487631/100676684-b6d90700-33ac-11eb-8249-85fdc8a5aac0.png">
  
 # How to Use
 
