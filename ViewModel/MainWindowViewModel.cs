@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using ImageViewer.Common;
@@ -21,6 +14,8 @@ namespace ImageViewer.ViewModel
         private readonly ImageHandler imageHandler = ImageHandler.GetInstance();
         private readonly PropertyChangedWeakEventListener listener = new PropertyChangedWeakEventListener();
 
+        private Setting setting = new Setting();
+
         public MainWindowViewModel()
         {
             // ViewModel => Model へのプロパティ変更通知監視
@@ -30,6 +25,7 @@ namespace ImageViewer.ViewModel
             this.listener.WeakPropertyChanged += this.OnWeakListenerPropertyChanged;
 
             base.AddListener(this.imageHandler, this.listener);
+            this.imageHandler.Setting(ref this.setting);
         }
 
         #region Event
@@ -75,11 +71,62 @@ namespace ImageViewer.ViewModel
                 case nameof(this.imageHandler.Thumbnail):
                     base.RaisePropertyChanged(nameof(this.Thumbnail));
                     break;
+                case nameof(this.imageHandler.MainImage):
+                    base.RaisePropertyChanged(nameof(this.MainImage));
+                    break;
+                case nameof(this.imageHandler.FileHeader):
+                    base.RaisePropertyChanged(nameof(this.FileHeader));
+                    break;
+                case nameof(this.imageHandler.OpenHeader):
+                    base.RaisePropertyChanged(nameof(this.OpenHeader));
+                    break;
+                case nameof(this.imageHandler.DirectoryDescription):
+                    base.RaisePropertyChanged(nameof(this.DirectoryDescription));
+                    break;
+                case nameof(this.imageHandler.CloseHeader):
+                    base.RaisePropertyChanged(nameof(this.CloseHeader));
+                    break;
+                case nameof(this.imageHandler.ViewHeader):
+                    base.RaisePropertyChanged(nameof(this.ViewHeader));
+                    break;
+                case nameof(this.imageHandler.ThumbnailHeader):
+                    base.RaisePropertyChanged(nameof(this.ThumbnailHeader));
+                    break;
+                case nameof(this.imageHandler.SlideshowHeader):
+                    base.RaisePropertyChanged(nameof(this.SlideshowHeader));
+                    break;
+                case nameof(this.imageHandler.OptionHeader):
+                    base.RaisePropertyChanged(nameof(this.OptionHeader));
+                    break;
+                case nameof(this.imageHandler.SettingHeader):
+                    base.RaisePropertyChanged(nameof(this.SettingHeader));
+                    break;
+                case nameof(this.imageHandler.SettingTitle):
+                    base.RaisePropertyChanged(nameof(this.SettingTitle));
+                    break;
+                case nameof(this.imageHandler.LanguageCaption):
+                    base.RaisePropertyChanged(nameof(this.LanguageCaption));
+                    break;
+                case nameof(this.imageHandler.CurrentLanguage):
+                    base.RaisePropertyChanged(nameof(this.CurrentLanguage));
+                    break;
+                case nameof(this.imageHandler.ViewportColorCaption):
+                    base.RaisePropertyChanged(nameof(this.ViewportColorCaption));
+                    break;
                 case nameof(this.imageHandler.CurrentViewportColor):
                     base.RaisePropertyChanged(nameof(this.CurrentViewportColor));
                     break;
-                case nameof(this.imageHandler.MainImage):
-                    base.RaisePropertyChanged(nameof(this.MainImage));
+                case nameof(this.imageHandler.SlideshowIntervalCaption):
+                    base.RaisePropertyChanged(nameof(this.SlideshowIntervalCaption));
+                    break;
+                case nameof(this.imageHandler.CurrentSlideShowInterval):
+                    base.RaisePropertyChanged(nameof(this.CurrentSlideShowInterval));
+                    break;
+                case nameof(this.imageHandler.OKCaption):
+                    base.RaisePropertyChanged(nameof(this.OKCaption));
+                    break;
+                case nameof(this.imageHandler.CancelCaption):
+                    base.RaisePropertyChanged(nameof(this.CancelCaption));
                     break;
                 default:
                     break;
@@ -137,6 +184,45 @@ namespace ImageViewer.ViewModel
             }
         }
 
+        private RelayCommand openDialogCommand;
+        public RelayCommand OpenDialogCommand
+        {
+            get
+            {
+                return this.openDialogCommand = this.openDialogCommand ?? new RelayCommand(this.OpenDialog);
+            }
+        }
+
+        private void OpenDialog()
+        {
+            // 設定変更前にスライドショーを止める
+            this.imageHandler.StopSlideshow();
+            this.IsSlideshow = false;
+
+            this.SettingViewModel = new SettingViewModel(this.setting);
+        }
+
+        private RelayCommand<SettingViewModel> closeDialogCommand;
+        public RelayCommand<SettingViewModel> CloseDialogCommand
+        {
+            get
+            {
+                return this.closeDialogCommand = this.closeDialogCommand ?? new RelayCommand<SettingViewModel>(this.CloseDialog);
+            }
+        }
+
+        private void CloseDialog(SettingViewModel parameter)
+        {
+            // 設定ダイアログから値を読み込み
+            if (parameter.IsOK)
+            {
+                this.setting.Language = parameter.CurrentLanguage;
+                this.setting.ViewportColor = parameter.CurrentViewportColor;
+                this.setting.SlideShowInterval = parameter.CurrentSlideShowInterval;
+                this.imageHandler.Setting(ref this.setting);
+            }
+        }
+
         #endregion
 
         #region Property
@@ -177,7 +263,7 @@ namespace ImageViewer.ViewModel
             }
         }
 
-        private Boolean isThumbnail;
+        private Boolean isThumbnail = true;
         public Boolean IsThumbnail
         {
             get { return this.isThumbnail; }
@@ -193,11 +279,6 @@ namespace ImageViewer.ViewModel
         public BitmapImage Thumbnail
         {
             get { return this.imageHandler.Thumbnail; }
-        }
-
-        public ViewportColor CurrentViewportColor
-        {
-            get { return this.imageHandler.CurrentViewportColor; }
         }
 
         public BitmapImage MainImage
@@ -217,6 +298,117 @@ namespace ImageViewer.ViewModel
                 }
             }
         }
+
+        #region Language
+
+        public String FileHeader
+        {
+            get { return this.imageHandler.FileHeader; }
+        }
+
+        public String OpenHeader
+        {
+            get { return this.imageHandler.OpenHeader; }
+        }
+
+        public String DirectoryDescription
+        {
+            get { return this.imageHandler.DirectoryDescription; }
+        }
+
+        public String CloseHeader
+        {
+            get { return this.imageHandler.CloseHeader; }
+        }
+
+        public String ViewHeader
+        {
+            get { return this.imageHandler.ViewHeader; }
+        }
+
+        public String ThumbnailHeader
+        {
+            get { return this.imageHandler.ThumbnailHeader; }
+        }
+
+        public String SlideshowHeader
+        {
+            get { return this.imageHandler.SlideshowHeader; }
+        }
+
+        public String OptionHeader
+        {
+            get { return this.imageHandler.OptionHeader; }
+        }
+
+        public String SettingHeader
+        {
+            get { return this.imageHandler.SettingHeader; }
+        }
+
+        #endregion
+
+        #region Setting
+
+        private SettingViewModel settingViewModel;
+        public SettingViewModel SettingViewModel
+        {
+            get { return this.settingViewModel; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.settingViewModel, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public String SettingTitle
+        {
+            get { return this.imageHandler.SettingTitle; }
+        }
+
+        public String LanguageCaption
+        {
+            get { return this.imageHandler.LanguageCaption; }
+        }
+
+        public String CurrentLanguage
+        {
+            get { return this.imageHandler.CurrentLanguage; }
+        }
+
+        public String ViewportColorCaption
+        {
+            get { return this.imageHandler.ViewportColorCaption; }
+        }
+
+        public ViewportColor CurrentViewportColor
+        {
+            get { return this.imageHandler.CurrentViewportColor; }
+        }
+
+        public String SlideshowIntervalCaption
+        {
+            get { return this.imageHandler.SlideshowIntervalCaption; }
+        }
+
+        public Int32 CurrentSlideShowInterval
+        {
+            get { return this.imageHandler.CurrentSlideShowInterval; }
+        }
+
+        public String OKCaption
+        {
+            get { return this.imageHandler.OKCaption; }
+        }
+
+        public String CancelCaption
+        {
+            get { return this.imageHandler.CancelCaption; }
+        }
+
+        #endregion
 
         #endregion
     }

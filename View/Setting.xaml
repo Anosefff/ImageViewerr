@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="ImageViewer.View.Setting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ImageViewer.View"
+             xmlns:common="clr-namespace:ImageViewer.Common"
+             common:CloseWindowBehavior.Close="{Binding IsClosedWindow}"
+             mc:Ignorable="d" 
+             d:DesignHeight="240" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="32" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource normalLabelStyle}" Content="{Binding LanguageCaption}" />
+            <ComboBox Grid.Row="0" Grid.Column="1" Style="{StaticResource normalComboBoxStyle}" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage}" />
+            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource normalLabelStyle}" Content="{Binding ViewportColorCaption}" />
+            <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource normalComboBoxStyle}" ItemsSource="{Binding Source={StaticResource viewportColorSource}}" SelectedItem="{Binding CurrentViewportColor}" />
+            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource normalLabelStyle}" Content="{Binding SlideshowIntervalCaption}" />
+            <ComboBox Grid.Row="2" Grid.Column="1" Style="{StaticResource normalComboBoxStyle}" ItemsSource="{Binding SlideshowIntervals}" SelectedItem="{Binding CurrentSlideShowInterval}" />
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Style="{StaticResource normalButtonStyle}" Content="{Binding OKCaption}" Command="{Binding OKCommand}" />
+            <Button Style="{StaticResource normalButtonStyle}" Content="{Binding CancelCaption}" Command="{Binding CancelCommand}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

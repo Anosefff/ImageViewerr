@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -178,7 +171,7 @@ namespace ImageViewer.Model
 
         private void StartSlideshow()
         {
-            this.slideshowTimer.Interval = new TimeSpan(0, 0, 1);
+            this.slideshowTimer.Interval = new TimeSpan(0, 0, this.CurrentSlideShowInterval);
             this.slideshowTimer.Tick -= this.SlideShowTimer;
             this.slideshowTimer.Tick += this.SlideShowTimer;
             this.slideshowTimer.Start();
@@ -188,6 +181,46 @@ namespace ImageViewer.Model
         {
             this.slideshowTimer.Stop();
             this.slideshowCount = 0;
+        }
+
+        public void Setting(ref Setting setting)
+        {
+            // Language
+
+            var languageId = 0;
+
+            if (setting.Language == ImageAttribute.Languages.ElementAtOrDefault((Int32)LanguageKind.English))
+            {
+                languageId = (Int32)LanguageKind.English;
+            }
+            else if (setting.Language == ImageAttribute.Languages.ElementAtOrDefault((Int32)LanguageKind.Japanese))
+            {
+                languageId = (Int32)LanguageKind.Japanese;
+            }
+            else
+            {
+            }
+
+            this.FileHeader = ImageAttribute.FileHeaders.ElementAtOrDefault(languageId);
+            this.OpenHeader = ImageAttribute.OpenHeaders.ElementAtOrDefault(languageId);
+            this.DirectoryDescription = ImageAttribute.DirectoryDescriptions.ElementAtOrDefault(languageId);
+            this.CloseHeader = ImageAttribute.CloseHeaders.ElementAtOrDefault(languageId);
+            this.ViewHeader = ImageAttribute.ViewHeaders.ElementAtOrDefault(languageId);
+            this.ThumbnailHeader = ImageAttribute.ThumbnailHeaders.ElementAtOrDefault(languageId);
+            this.SlideshowHeader = ImageAttribute.SlideshowHeaders.ElementAtOrDefault(languageId);
+            this.OptionHeader = ImageAttribute.OptionHeaders.ElementAtOrDefault(languageId);
+            this.SettingHeader = ImageAttribute.SettingHeaders.ElementAtOrDefault(languageId);
+
+            // Setting
+            this.SettingTitle = setting.SettingTitle = ImageAttribute.SettingTitles.ElementAtOrDefault(languageId);
+            this.LanguageCaption = setting.LanguageCaption = ImageAttribute.LanguageCaptions.ElementAtOrDefault(languageId);
+            this.CurrentLanguage = setting.Language;
+            this.ViewportColorCaption = setting.ViewportColorCaption = ImageAttribute.ViewportColorCaptions.ElementAtOrDefault(languageId);
+            this.CurrentViewportColor = setting.ViewportColor;
+            this.SlideshowIntervalCaption = setting.SlideshowIntervalCaption = ImageAttribute.SlideshowIntervalCaptions.ElementAtOrDefault(languageId);
+            this.CurrentSlideShowInterval = setting.SlideShowInterval;
+            this.OKCaption = setting.OKCaption =  ImageAttribute.OKCaptions.ElementAtOrDefault(languageId);
+            this.CancelCaption = setting.CancelCaption = ImageAttribute.CancelCaptions.ElementAtOrDefault(languageId);
         }
 
         #endregion
@@ -272,19 +305,6 @@ namespace ImageViewer.Model
             }
         }
 
-        private ViewportColor currentViewportColor = ViewportColor.Red;
-        public ViewportColor CurrentViewportColor
-        {
-            get { return this.currentViewportColor; }
-            set
-            {
-                if (base.RaisePropertyChangedIfSet(ref this.currentViewportColor, value))
-                {
-                    base.RaisePropertyChanged();
-                }
-            }
-        }
-
         private BitmapImage mainImage;
         public BitmapImage MainImage
         {
@@ -310,6 +330,248 @@ namespace ImageViewer.Model
                 }
             }
         }
+
+        #region Language
+
+        private String fileHeader;
+        public String FileHeader
+        {
+            get { return this.fileHeader; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.fileHeader, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String openHeader;
+        public String OpenHeader
+        {
+            get { return this.openHeader; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.openHeader, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String directoryDescription;
+        public String DirectoryDescription
+        {
+            get { return this.directoryDescription; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.directoryDescription, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String closeHeader;
+        public String CloseHeader
+        {
+            get { return this.closeHeader; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.closeHeader, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String viewHeader;
+        public String ViewHeader
+        {
+            get { return this.viewHeader; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.viewHeader, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String thumbnailHeader;
+        public String ThumbnailHeader
+        {
+            get { return this.thumbnailHeader; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.thumbnailHeader, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String slideshowHeader;
+        public String SlideshowHeader
+        {
+            get { return this.slideshowHeader; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.slideshowHeader, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String optionHeader;
+        public String OptionHeader
+        {
+            get { return this.optionHeader; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.optionHeader, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String settingHeader;
+        public String SettingHeader
+        {
+            get { return this.settingHeader; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.settingHeader, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Setting
+
+        private String settingTitle;
+        public String SettingTitle
+        {
+            get { return this.settingTitle; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.settingTitle, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String languageCaption;
+        public String LanguageCaption
+        {
+            get { return this.languageCaption; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.languageCaption, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String currentLanguage;
+        public String CurrentLanguage
+        {
+            get { return this.currentLanguage; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.currentLanguage, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String viewportColorCaption;
+        public String ViewportColorCaption
+        {
+            get { return this.viewportColorCaption; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.viewportColorCaption, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private ViewportColor currentViewportColor;
+        public ViewportColor CurrentViewportColor
+        {
+            get { return this.currentViewportColor; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.currentViewportColor, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String slideshowIntervalCaption;
+        public String SlideshowIntervalCaption
+        {
+            get { return this.slideshowIntervalCaption; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.slideshowIntervalCaption, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private Int32 currentSlideShowInterval;
+        public Int32 CurrentSlideShowInterval
+        {
+            get { return this.currentSlideShowInterval; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.currentSlideShowInterval, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String okCaption;
+        public String OKCaption
+        {
+            get { return this.okCaption; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.okCaption, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        private String cancelCaption;
+        public String CancelCaption
+        {
+            get { return this.cancelCaption; }
+            set
+            {
+                if (base.RaisePropertyChangedIfSet(ref this.cancelCaption, value))
+                {
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        #endregion
 
         #endregion
     }

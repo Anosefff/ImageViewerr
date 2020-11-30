@@ -17,7 +17,16 @@
         <common:WindowCloseBehavior />
         <common:ViewModelCleanupBehavior />
     </i:Interaction.Behaviors>
-    <Grid>
+    <Grid common:OpenWindowBehavior.Title="{Binding SettingTitle, Mode=OneWay}"
+          common:OpenWindowBehavior.CloseCommand="{Binding CloseDialogCommand}"
+          common:OpenWindowBehavior.HasOwner="True"
+          common:OpenWindowBehavior.IsModal="True"
+          common:OpenWindowBehavior.WindowViewModel="{Binding SettingViewModel}">
+        <common:OpenWindowBehavior.WindowTemplate>
+            <DataTemplate>
+                <local:Setting />
+            </DataTemplate>
+        </common:OpenWindowBehavior.WindowTemplate>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -25,16 +34,16 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Style="{StaticResource normalLabelStyle}" Content="{Binding CurrentImageFilePath.FullPath}" Background="LightGray" Visibility="{Binding IsDisplayedImageTreeView, Converter={StaticResource boolToVis}}" />
         <Menu Grid.Row="1" VerticalAlignment="Top">
-            <MenuItem Header="ファイル">
-                <MenuItem Header="開く">
+            <MenuItem Header="{Binding FileHeader, Mode=OneWay}">
+                <MenuItem Header="{Binding OpenHeader, Mode=OneWay}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <common:FolderBrowserDialogAction Description="画像フォルダ選択" SelectedPath="{Binding ImageDirectoryPath, Mode=OneWayToSource}" ShowNewFolderButton="True" />
+                            <common:FolderBrowserDialogAction Description="" SelectedPath="{Binding ImageDirectoryPath, Mode=OneWayToSource}" ShowNewFolderButton="False" />
                             <i:InvokeCommandAction Command="{Binding ImageTreeViewDisplayCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>
-                <MenuItem Header="終了">
+                <MenuItem Header="{Binding CloseHeader, Mode=OneWay}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <i:InvokeCommandAction Command="Close" />
@@ -42,9 +51,9 @@
                     </i:Interaction.Triggers>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="表示">
-                <MenuItem Header="サムネイル" IsCheckable="True" IsChecked="{Binding IsThumbnail}" />
-                <MenuItem Header="スライドショー" IsCheckable="True" IsChecked="{Binding IsSlideshow}">
+            <MenuItem Header="{Binding ViewHeader, Mode=OneWay}">
+                <MenuItem Header="{Binding ThumbnailHeader, Mode=OneWay}" IsCheckable="True" IsChecked="{Binding IsThumbnail}" />
+                <MenuItem Header="{Binding SlideshowHeader, Mode=OneWay}" IsCheckable="True" IsChecked="{Binding IsSlideshow}" IsEnabled="{Binding IsDisplayedImageTreeView, Mode=OneWay}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <i:InvokeCommandAction Command="{Binding SlideshowCommand}" />
@@ -52,10 +61,14 @@
                     </i:Interaction.Triggers>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="オプション">
-                <MenuItem Header="設定" />
-                <MenuItem Header="設定をインポート" />
-                <MenuItem Header="設定をエクスポート" />
+            <MenuItem Header="{Binding OptionHeader, Mode=OneWay}">
+                <MenuItem Header="{Binding SettingHeader, Mode=OneWay}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding OpenDialogCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
             </MenuItem>
         </Menu>
         <Grid Grid.Row="2" x:Name="topGrid">
@@ -68,8 +81,8 @@
                 <common:CustomTreeView.Resources>
                     <Style TargetType="TreeViewItem">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding DataContext.IsSlideshow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="true">
-                                <Setter Property="IsEnabled" Value="false" />
+                            <DataTrigger Binding="{Binding DataContext.IsSlideshow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -96,19 +109,19 @@
                                 <Rectangle.Style>
                                     <Style TargetType="Rectangle">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Red">
+                                            <DataTrigger Binding="{Binding CurrentViewportColor, Mode=OneWay}" Value="Red">
                                                 <Setter Property="Fill" Value="Red" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Blue">
+                                            <DataTrigger Binding="{Binding CurrentViewportColor, Mode=OneWay}" Value="Blue">
                                                 <Setter Property="Fill" Value="Blue" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Green">
+                                            <DataTrigger Binding="{Binding CurrentViewportColor, Mode=OneWay}" Value="Green">
                                                 <Setter Property="Fill" Value="Green" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Yellow">
+                                            <DataTrigger Binding="{Binding CurrentViewportColor, Mode=OneWay}" Value="Yellow">
                                                 <Setter Property="Fill" Value="Yellow" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding CurrentViewportColor}" Value="Pink">
+                                            <DataTrigger Binding="{Binding CurrentViewportColor, Mode=OneWay}" Value="Pink">
                                                 <Setter Property="Fill" Value="Pink" />
                                             </DataTrigger>
                                         </Style.Triggers>
