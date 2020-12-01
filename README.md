@@ -41,7 +41,10 @@
 
 	1. "Setting(設定)" メニューアイテム
 
-		1. 以下の設定項目を変更できます。  ・"Language(言語)" - 日本語またはEnglish  ・"ViewportColor(ビューポートの色)" - Red, Blue, Green, Yellow, Pink  ・"Slideshow Interval(スライドショーの間隔)" - 1, 5, 10, 20, 30 seconds(秒)
+		1. 以下の設定項目を変更できます。
+			1. "Language(言語)" - 日本語またはEnglish
+			1. "ViewportColor(ビューポートの色)" - Red, Blue, Green, Yellow, Pink
+			1. "Slideshow Interval(スライドショーの間隔)" - 1, 5, 10, 20, 30 seconds(秒)
 
 # Features
  
