@@ -74,7 +74,7 @@ namespace ImageViewer.Common
 
         public static readonly List<String> SlideshowIntervalCaptions = new List<String>()
         {
-            "Slideshow Interval", "スライドショーの間隔"
+            "Slideshow Interval(seconds)", "スライドショーの間隔(秒)"
         };
 
         public static readonly List<String> OKCaptions = new List<String>()
