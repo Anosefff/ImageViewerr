@@ -8,7 +8,8 @@
 
 起動時はサンプル画像を表示します。
 
-1. "File(ファイル)" メニュー
+
+##1. "File(ファイル)" メニュー
 
 	1. "Open(開く)" メニューアイテム
 
@@ -25,7 +26,7 @@
 		1. アプリケーションを終了します。
 
 
-1. "View(表示)" メニュー
+##1. "View(表示)" メニュー
 
 	1. "Thumnail(サムネイル)" メニューアイテム
 
@@ -36,15 +37,11 @@
 		1. TreeView表示時にスライドショーを開始・終了します。TreeView上でディレクトリをを選択していたらその配下の画像ファイル、画像ファイルを選択していたらそのカレントディレクトリ配下の画像ファイルを一定間隔で表示します(デフォルトでは1秒間隔です)。
 
 
-1. "Option(オプションツリービュー)"
+##1. "Option(オプションツリービュー)"
 
 	1. "Setting(設定)" メニューアイテム
 
-		1. 以下の設定項目を変更できます。
-
-        ・"Language(言語)" - 日本語またはEnglish
-        ・"ViewportColor(ビューポートの色)" - Red, Blue, Green, Yellow, Pink
-        ・"Slideshow Interval(スライドショーの間隔)" - 1, 5, 10, 20, 30 seconds(秒)
+		1. 以下の設定項目を変更できます。  ・"Language(言語)" - 日本語またはEnglish  ・"ViewportColor(ビューポートの色)" - Red, Blue, Green, Yellow, Pink  ・"Slideshow Interval(スライドショーの間隔)" - 1, 5, 10, 20, 30 seconds(秒)
 
 # Features
  
