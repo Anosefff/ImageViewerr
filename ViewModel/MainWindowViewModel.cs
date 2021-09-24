@@ -18,7 +18,7 @@ namespace ImageViewer.ViewModel
 
         public MainWindowViewModel()
         {
-            // ViewModel => Model へのプロパティ変更通知監視
+            // ViewModel => Model へのプロパティ変更通知を監視
             base.PropertyChanged += this.OnThisPropertyChanged;
 
             // Model => ViewModel への弱いイベントハンドラ・リスナを登録
